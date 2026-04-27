@@ -1,4 +1,4 @@
-# 🗺️ Viajero
+#  Viajero
 
 Tercera Pre-Entrega Python
 
