@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio - Viajero{% endblock %}
+
+{% block content %}
+<h1>¡Bienvenido a Viajero!</h1>
+<p>Guardá y organizá los lugares que querés visitar.</p>
+
+{% if user.is_authenticated %}
+    <p>Hola, <strong>{{ user.username }}</strong>.</p>
+    <a href="{% url 'visitidea_list' %}" class="btn btn-primary">Ver mis ideas</a>
+    <a href="{% url 'visitidea_create' %}" class="btn btn-secondary">+ Nueva idea</a>
+{% else %}
+    <p>Iniciá sesión para empezar.</p>
+    <a href="{% url 'login' %}" class="btn btn-primary">Iniciar sesión</a>
+{% endif %}
+{% endblock %}

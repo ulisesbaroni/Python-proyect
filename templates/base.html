@@ -28,11 +28,13 @@
         <a href="{% url 'home' %}" class="brand">🗺️ Viajero</a>
         {% if user.is_authenticated %}
             <a href="{% url 'visitidea_list' %}">Mis ideas</a>
-            <a href="{% url 'visitidea_create' %}">+ Nueva idea</a>
+            <a href="{% url 'visitidea_create' %}">+ Nueva</a>
+            <a href="{% url 'about' %}">Acerca de mí</a>
             <a href="/admin/">Admin</a>
             <span style="color:#aaa; margin-left:auto;">{{ user.username }}</span>
         {% else %}
-            <a href="/admin/login/">Iniciar sesión</a>
+            <a href="{% url 'about' %}">Acerca de mí</a>
+            <a href="{% url 'login' %}">Iniciar sesión</a>
         {% endif %}
     </nav>
     <div class="container">
