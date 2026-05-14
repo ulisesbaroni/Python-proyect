@@ -9,7 +9,7 @@ Aplicación web desarrollada con Django para gestionar destinos que querés visi
 ### 1. Clonar el repositorio
 
 ```bash
-git clone <url-del-repo>
+git clone https://github.com/ulisesbaroni/Python-proyect
 cd viajero
 ```
 
@@ -67,6 +67,7 @@ Accedé a [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ## Estructura del proyecto
 
+```
 viajero/
 ├── home/                   # App de vistas generales
 │   ├── urls.py
@@ -96,8 +97,7 @@ viajero/
 ├── manage.py
 ├── README.md
 └── requirements.txt
-
----
+```
 
 ## Tecnologías
 
