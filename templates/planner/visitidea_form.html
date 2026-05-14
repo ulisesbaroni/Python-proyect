@@ -3,28 +3,23 @@
 {% block title %}{{ accion }} idea - Viajero{% endblock %}
 
 {% block content %}
-<h1>{{ accion }} idea de viaje</h1>
+<h1 class="mb-4">{{ accion }} idea de viaje</h1>
 
-<form method="POST" style="max-width:500px; margin-top:20px;">
+<form method="POST" style="max-width:500px;">
     {% csrf_token %}
-
     {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-            <div class="alert">{{ error }}</div>
-        {% endfor %}
+        <div class="alert alert-danger">{{ form.non_field_errors.0 }}</div>
     {% endif %}
-
     {% for field in form %}
-        <div style="margin-bottom:16px;">
-            <label style="display:block; margin-bottom:4px; font-weight:bold;">{{ field.label }}</label>
+        <div class="mb-3">
+            <label class="form-label fw-bold">{{ field.label }}</label>
             {{ field }}
             {% if field.errors %}
-                <span style="color:#c0392b; font-size:13px;">{{ field.errors.0 }}</span>
+                <div class="text-danger small">{{ field.errors.0 }}</div>
             {% endif %}
         </div>
     {% endfor %}
-
     <button type="submit" class="btn btn-primary">{{ accion }}</button>
-    <a href="{% url 'visitidea_list' %}" class="btn btn-secondary" style="margin-left:10px;">Cancelar</a>
+    <a href="{% url 'visitidea_list' %}" class="btn btn-outline-secondary ms-2">Cancelar</a>
 </form>
 {% endblock %}

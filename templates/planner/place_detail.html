@@ -3,34 +3,22 @@
 {% block title %}{{ place.nombre }} - Viajero{% endblock %}
 
 {% block content %}
-<h1>{{ place.nombre }}</h1>
+<h1 class="mb-4">{{ place.nombre }}</h1>
 
 {% if place.imagen %}
-    <img src="{{ place.imagen.url }}" alt="{{ place.nombre }}" style="max-width:400px; border-radius:8px; margin-bottom:20px;">
+    <img src="{{ place.imagen.url }}" alt="{{ place.nombre }}" class="img-fluid rounded mb-4" style="max-width:400px;">
 {% endif %}
 
-<table style="border-collapse:collapse; width:100%; max-width:600px;">
-    <tr style="border-bottom:1px solid #ddd;">
-        <td style="padding:10px; font-weight:bold; width:140px;">Ubicación</td>
-        <td style="padding:10px;">{{ place.ubicacion|default:"-" }}</td>
-    </tr>
-    <tr style="border-bottom:1px solid #ddd;">
-        <td style="padding:10px; font-weight:bold;">Km</td>
-        <td style="padding:10px;">{{ place.km|default:"-" }}</td>
-    </tr>
-    <tr style="border-bottom:1px solid #ddd;">
-        <td style="padding:10px; font-weight:bold;">Descripción</td>
-        <td style="padding:10px;">{{ place.descripcion|default:"-" }}</td>
-    </tr>
-    <tr style="border-bottom:1px solid #ddd;">
-        <td style="padding:10px; font-weight:bold;">Fecha</td>
-        <td style="padding:10px;">{{ place.fecha_visita|date:"d/m/Y"|default:"-" }}</td>
-    </tr>
+<table class="table table-bordered" style="max-width:600px;">
+    <tr><th style="width:160px;">Ubicación</th><td>{{ place.ubicacion|default:"-" }}</td></tr>
+    <tr><th>Km</th><td>{{ place.km|default:"-" }}</td></tr>
+    <tr><th>Descripción</th><td>{{ place.descripcion|default:"-" }}</td></tr>
+    <tr><th>Fecha de visita</th><td>{{ place.fecha_visita|date:"d/m/Y"|default:"-" }}</td></tr>
 </table>
 
-<div style="margin-top:20px; display:flex; gap:10px;">
+<div class="d-flex gap-2 mt-3">
     <a href="{% url 'place_edit' place.pk %}" class="btn btn-primary">Editar</a>
     <a href="{% url 'place_delete' place.pk %}" class="btn btn-danger">Borrar</a>
-    <a href="{% url 'place_list' %}" class="btn btn-secondary">Volver</a>
+    <a href="{% url 'place_list' %}" class="btn btn-outline-secondary">Volver</a>
 </div>
 {% endblock %}

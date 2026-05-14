@@ -3,39 +3,22 @@
 {% block title %}Mi perfil - Viajero{% endblock %}
 
 {% block content %}
-<h1>Mi perfil</h1>
+<h1 class="mb-4">Mi perfil</h1>
 
-<div style="margin-top:16px;">
-    {% if perfil.avatar %}
-        <img src="{{ perfil.avatar.url }}" alt="avatar" style="width:100px; height:100px; border-radius:50%; object-fit:cover; margin-bottom:16px;">
-    {% endif %}
+{% if perfil.avatar %}
+    <img src="{{ perfil.avatar.url }}" alt="avatar" class="rounded-circle mb-3" style="width:100px; height:100px; object-fit:cover;">
+{% endif %}
 
-    <table style="border-collapse:collapse; max-width:500px; width:100%;">
-        <tr style="border-bottom:1px solid #ddd;">
-            <td style="padding:10px; font-weight:bold; width:140px;">Usuario</td>
-            <td style="padding:10px;">{{ perfil.usuario.username }}</td>
-        </tr>
-        <tr style="border-bottom:1px solid #ddd;">
-            <td style="padding:10px; font-weight:bold;">Nombre</td>
-            <td style="padding:10px;">{{ perfil.usuario.first_name|default:"-" }}</td>
-        </tr>
-        <tr style="border-bottom:1px solid #ddd;">
-            <td style="padding:10px; font-weight:bold;">Apellido</td>
-            <td style="padding:10px;">{{ perfil.usuario.last_name|default:"-" }}</td>
-        </tr>
-        <tr style="border-bottom:1px solid #ddd;">
-            <td style="padding:10px; font-weight:bold;">Email</td>
-            <td style="padding:10px;">{{ perfil.usuario.email|default:"-" }}</td>
-        </tr>
-        <tr style="border-bottom:1px solid #ddd;">
-            <td style="padding:10px; font-weight:bold;">Experiencia</td>
-            <td style="padding:10px;">{{ perfil.experiencia|default:"-" }}</td>
-        </tr>
-    </table>
+<table class="table table-bordered" style="max-width:500px;">
+    <tr><th style="width:140px;">Usuario</th><td>{{ perfil.usuario.username }}</td></tr>
+    <tr><th>Nombre</th><td>{{ perfil.usuario.first_name|default:"-" }}</td></tr>
+    <tr><th>Apellido</th><td>{{ perfil.usuario.last_name|default:"-" }}</td></tr>
+    <tr><th>Email</th><td>{{ perfil.usuario.email|default:"-" }}</td></tr>
+    <tr><th>Experiencia</th><td>{{ perfil.experiencia|default:"-" }}</td></tr>
+</table>
 
-    <div style="margin-top:20px; display:flex; gap:10px;">
-        <a href="{% url 'editar_perfil' %}" class="btn btn-primary">Editar perfil</a>
-        <a href="{% url 'cambiar_password' %}" class="btn btn-secondary">Cambiar contraseña</a>
-    </div>
+<div class="d-flex gap-2 mt-3">
+    <a href="{% url 'editar_perfil' %}" class="btn btn-primary">Editar perfil</a>
+    <a href="{% url 'cambiar_password' %}" class="btn btn-outline-secondary">Cambiar contraseña</a>
 </div>
 {% endblock %}

@@ -3,20 +3,20 @@
 {% block title %}Registro - Viajero{% endblock %}
 
 {% block content %}
-<h1>Crear cuenta</h1>
+<h1 class="mb-4">Crear cuenta</h1>
 
-<form method="POST" style="max-width:400px; margin-top:20px;">
+<form method="POST" style="max-width:400px;">
     {% csrf_token %}
     {% for field in form %}
-        <div style="margin-bottom:14px;">
-            <label style="display:block; margin-bottom:4px; font-weight:bold;">{{ field.label }}</label>
+        <div class="mb-3">
+            <label class="form-label fw-bold">{{ field.label }}</label>
             {{ field }}
             {% if field.errors %}
-                <span style="color:#c0392b; font-size:13px;">{{ field.errors.0 }}</span>
+                <div class="text-danger small">{{ field.errors.0 }}</div>
             {% endif %}
         </div>
     {% endfor %}
     <button type="submit" class="btn btn-primary">Registrarse</button>
-    <a href="{% url 'login' %}" style="margin-left:10px;">¿Ya tenés cuenta?</a>
+    <a href="{% url 'login' %}" class="ms-3">¿Ya tenés cuenta?</a>
 </form>
 {% endblock %}
