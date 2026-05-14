@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from django.contrib.auth.models import User
@@ -36,7 +36,6 @@ class LoginView(View):
         return render(request, 'usuarios/login.html', {'error': 'Usuario o contraseña incorrectos'})
 
 
-# uso decorador acá en vez de mixin, para mostrar las dos formas
 @login_required(login_url='/login/')
 def perfil_view(request):
     perfil, _ = Perfil.objects.get_or_create(usuario=request.user)
@@ -70,6 +69,31 @@ def editar_perfil_view(request):
         })
 
     return render(request, 'usuarios/editar_perfil.html', {'form': form})
+
+
+@login_required(login_url='/login/')
+def cambiar_password_view(request):
+    if request.method == 'POST':
+        actual = request.POST.get('password_actual')
+        nueva = request.POST.get('password_nueva')
+        confirmar = request.POST.get('password_confirmar')
+
+        if not request.user.check_password(actual):
+            return render(request, 'usuarios/cambiar_password.html', {'error': 'La contraseña actual es incorrecta.'})
+
+        if nueva != confirmar:
+            return render(request, 'usuarios/cambiar_password.html', {'error': 'Las contraseñas nuevas no coinciden.'})
+
+        if len(nueva) < 8:
+            return render(request, 'usuarios/cambiar_password.html', {'error': 'La nueva contraseña debe tener al menos 8 caracteres.'})
+
+        request.user.set_password(nueva)
+        request.user.save()
+        # importante: actualiza la sesión para que no se desloguee
+        update_session_auth_hash(request, request.user)
+        return redirect('perfil')
+
+    return render(request, 'usuarios/cambiar_password.html')
 
 
 def logout_view(request):
