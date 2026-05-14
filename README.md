@@ -1,8 +1,6 @@
-#  Viajero
+# 🗺️ Viajero
 
-Tercera Pre-Entrega Python
-
-App para gestionar destinos que querés visitar. Podés guardar lugares, organizarlos por estado (Idea → Investigando → Planificado → Listo) y filtrarlos por nombre, estado o país.
+Aplicación web desarrollada con Django para gestionar destinos que querés visitar. Podés guardar lugares, organizarlos por estado (Idea → Investigando → Planificado → Listo) y administrar tu perfil de usuario.
 
 ---
 
@@ -39,7 +37,7 @@ pip install -r requirements.txt
 python manage.py migrate
 ```
 
-### 5. Crear superusuario
+### 5. Crear superusuario (opcional, para acceder al admin)
 
 ```bash
 python manage.py createsuperuser
@@ -55,35 +53,42 @@ Accedé a [http://127.0.0.1:8000](http://127.0.0.1:8000)
 
 ---
 
-## Uso
+## Funcionalidades
 
-1. Iniciá sesión con el superusuario creado
-2. Desde el panel de administración (`/admin/`) podés crear lugares (`Place`)
-3. Desde la app podés crear ideas de visita, editarlas y filtrarlas por estado o país
+- Registro, login y logout de usuarios
+- Perfil de usuario con avatar, nombre, apellido, email y experiencia
+- Edición de perfil y cambio de contraseña
+- Gestión de lugares (CRUD completo): nombre, ubicación, km, descripción, imagen y fecha de visita
+- Gestión de ideas de visita con estados y prioridades
+- Buscador y filtros en el listado de lugares e ideas
+- Agrupamiento de ideas por estado
 
 ---
 
 ## Estructura del proyecto
 
-```
 viajero/
-├── planner/              # App principal
+├── home/                   # App de vistas generales
+│   ├── urls.py
+│   └── views.py
+├── planner/                # App principal con lugares e ideas
 │   ├── migrations/
-│   ├── __init__.py
-│   ├── admin.py
+│   ├── forms.py
+│   ├── models.py
+│   ├── urls.py
+│   └── views.py
+├── usuarios/               # App de autenticación y perfiles
+│   ├── migrations/
 │   ├── forms.py
 │   ├── models.py
 │   ├── urls.py
 │   └── views.py
 ├── templates/
-│   └── planner/
-│       ├── base.html
-│       ├── home.html
-│       ├── visitidea_list.html
-│       ├── visitidea_form.html
-│       └── visitidea_detail.html
-├── viajero/              # Configuración del proyecto
-│   ├── __init__.py
+│   ├── base.html
+│   ├── home/
+│   ├── planner/
+│   └── usuarios/
+├── viajero/                # Configuración del proyecto
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
@@ -91,11 +96,12 @@ viajero/
 ├── manage.py
 ├── README.md
 └── requirements.txt
-```
 
 ---
 
-## Modelos
+## Tecnologías
 
-- **Place**: representa un lugar geográfico (nombre, ubicación, km, descripción)
-- **VisitIdea**: representa la idea de visitar un lugar, asociada a un usuario, con estado, prioridad y notas
+- Python 3.14
+- Django 6.0
+- Bootstrap 5.3
+- SQLite
