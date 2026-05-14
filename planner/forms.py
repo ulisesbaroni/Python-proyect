@@ -3,19 +3,37 @@ from .models import Place, VisitIdea
 
 
 class PlaceForm(forms.Form):
-    nombre = forms.CharField(max_length=200, label='Nombre del lugar')
-    ubicacion = forms.CharField(max_length=100, required=False, label='Ubicación')
-    km = forms.CharField(max_length=100, required=False, label='Km')
-    descripcion = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 3}),
-        required=False,
-        label='Descripción'
+    nombre = forms.CharField(
+        max_length=200,
+        label='Nombre del lugar',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Cascada del Río'})
     )
-    imagen = forms.ImageField(required=False, label='Imagen')
+    ubicacion = forms.CharField(
+        max_length=100,
+        required=False,
+        label='Ubicación',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: Sierra de Córdoba'})
+    )
+    km = forms.CharField(
+        max_length=100,
+        required=False,
+        label='Km desde casa',
+        widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ej: 45'})
+    )
+    descripcion = forms.CharField(
+        required=False,
+        label='Descripción',
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Contá algo sobre este lugar...'})
+    )
+    imagen = forms.ImageField(
+        required=False,
+        label='Imagen',
+        widget=forms.FileInput(attrs={'class': 'form-control'})
+    )
     fecha_visita = forms.DateField(
         required=False,
         label='Fecha de visita',
-        widget=forms.DateInput(attrs={'type': 'date'})
+        widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'})
     )
 
 
@@ -34,13 +52,25 @@ class VisitIdeaForm(forms.Form):
         ('alta', 'Alta'),
     ]
 
-    lugar = forms.ModelChoiceField(queryset=Place.objects.all(), label='Lugar')
-    estado = forms.ChoiceField(choices=ESTADO_CHOICES, label='Estado')
-    prioridad = forms.ChoiceField(choices=PRIORIDAD_CHOICES, label='Prioridad')
+    lugar = forms.ModelChoiceField(
+        queryset=Place.objects.all(),
+        label='Lugar',
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    estado = forms.ChoiceField(
+        choices=ESTADO_CHOICES,
+        label='Estado',
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
+    prioridad = forms.ChoiceField(
+        choices=PRIORIDAD_CHOICES,
+        label='Prioridad',
+        widget=forms.Select(attrs={'class': 'form-select'})
+    )
     notas = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 4}),
         required=False,
-        label='Notas'
+        label='Notas',
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'Anotá lo que necesitás recordar...'})
     )
 
     def clean(self):
@@ -50,4 +80,3 @@ class VisitIdeaForm(forms.Form):
         if estado == 'planificado' and not notas:
             raise forms.ValidationError('Para pasar a "Planificado" es necesario agregar notas.')
         return cleaned_data
-    
