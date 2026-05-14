@@ -7,10 +7,12 @@ class Place(models.Model):
     ubicacion = models.CharField(max_length=100, blank=True, null=True)
     km = models.CharField(max_length=100, blank=True, null=True)
     descripcion = models.TextField(blank=True, null=True)
+    imagen = models.ImageField(upload_to='lugares/', blank=True, null=True)
+    fecha_visita = models.DateField(blank=True, null=True)
 
     def __str__(self):
-        if self.ubicacion and self.km:
-            return f'{self.nombre} - {self.ubicacion}, {self.km} km'
+        if self.ubicacion:
+            return f'{self.nombre} - {self.ubicacion}'
         return self.nombre
 
     class Meta:

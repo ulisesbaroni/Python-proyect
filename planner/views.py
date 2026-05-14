@@ -7,12 +7,97 @@ from .forms import PlaceForm, VisitIdeaForm
 
 class HomeView(View):
     def get(self, request):
-        total = VisitIdea.objects.filter(usuario=request.user).count() if request.user.is_authenticated else 0
-        return render(request, 'planner/home.html', {'total': total})
+        return render(request, 'home/index.html')
 
+
+# -- Place views --
+
+class PlaceListView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        busqueda = request.GET.get('busqueda', '')
+        places = Place.objects.filter(nombre__icontains=busqueda) if busqueda else Place.objects.all()
+        return render(request, 'planner/place_list.html', {'places': places, 'busqueda': busqueda})
+
+
+class PlaceCreateView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request):
+        form = PlaceForm()
+        return render(request, 'planner/place_form.html', {'form': form, 'accion': 'Crear'})
+
+    def post(self, request):
+        form = PlaceForm(request.POST, request.FILES)
+        if form.is_valid():
+            Place.objects.create(
+                nombre=form.cleaned_data['nombre'],
+                ubicacion=form.cleaned_data['ubicacion'],
+                km=form.cleaned_data['km'],
+                descripcion=form.cleaned_data['descripcion'],
+                imagen=form.cleaned_data.get('imagen'),
+                fecha_visita=form.cleaned_data.get('fecha_visita'),
+            )
+            return redirect('place_list')
+        return render(request, 'planner/place_form.html', {'form': form, 'accion': 'Crear'})
+
+
+class PlaceEditView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request, pk):
+        place = get_object_or_404(Place, pk=pk)
+        form = PlaceForm(initial={
+            'nombre': place.nombre,
+            'ubicacion': place.ubicacion,
+            'km': place.km,
+            'descripcion': place.descripcion,
+            'fecha_visita': place.fecha_visita,
+        })
+        return render(request, 'planner/place_form.html', {'form': form, 'accion': 'Editar'})
+
+    def post(self, request, pk):
+        place = get_object_or_404(Place, pk=pk)
+        form = PlaceForm(request.POST, request.FILES)
+        if form.is_valid():
+            place.nombre = form.cleaned_data['nombre']
+            place.ubicacion = form.cleaned_data['ubicacion']
+            place.km = form.cleaned_data['km']
+            place.descripcion = form.cleaned_data['descripcion']
+            place.fecha_visita = form.cleaned_data.get('fecha_visita')
+            if form.cleaned_data.get('imagen'):
+                place.imagen = form.cleaned_data['imagen']
+            place.save()
+            return redirect('place_list')
+        return render(request, 'planner/place_form.html', {'form': form, 'accion': 'Editar'})
+
+
+class PlaceDetailView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request, pk):
+        place = get_object_or_404(Place, pk=pk)
+        return render(request, 'planner/place_detail.html', {'place': place})
+
+
+class PlaceDeleteView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request, pk):
+        place = get_object_or_404(Place, pk=pk)
+        return render(request, 'planner/place_confirm_delete.html', {'place': place})
+
+    def post(self, request, pk):
+        place = get_object_or_404(Place, pk=pk)
+        place.delete()
+        return redirect('place_list')
+
+
+# -- VisitIdea views --
 
 class VisitIdeaListView(LoginRequiredMixin, View):
-    login_url = '/admin/login/'
+    login_url = '/login/'
 
     def get(self, request):
         ideas = VisitIdea.objects.filter(usuario=request.user)
@@ -47,7 +132,7 @@ class VisitIdeaListView(LoginRequiredMixin, View):
 
 
 class VisitIdeaCreateView(LoginRequiredMixin, View):
-    login_url = '/admin/login/'
+    login_url = '/login/'
 
     def get(self, request):
         form = VisitIdeaForm()
@@ -68,7 +153,7 @@ class VisitIdeaCreateView(LoginRequiredMixin, View):
 
 
 class VisitIdeaEditView(LoginRequiredMixin, View):
-    login_url = '/admin/login/'
+    login_url = '/login/'
 
     def get(self, request, pk):
         idea = get_object_or_404(VisitIdea, pk=pk, usuario=request.user)
@@ -94,8 +179,9 @@ class VisitIdeaEditView(LoginRequiredMixin, View):
 
 
 class VisitIdeaDetailView(LoginRequiredMixin, View):
-    login_url = '/admin/login/'
+    login_url = '/login/'
 
     def get(self, request, pk):
         idea = get_object_or_404(VisitIdea, pk=pk, usuario=request.user)
         return render(request, 'planner/visitidea_detail.html', {'idea': idea})
+    

@@ -11,6 +11,12 @@ class PlaceForm(forms.Form):
         required=False,
         label='Descripción'
     )
+    imagen = forms.ImageField(required=False, label='Imagen')
+    fecha_visita = forms.DateField(
+        required=False,
+        label='Fecha de visita',
+        widget=forms.DateInput(attrs={'type': 'date'})
+    )
 
 
 class VisitIdeaForm(forms.Form):
@@ -28,10 +34,7 @@ class VisitIdeaForm(forms.Form):
         ('alta', 'Alta'),
     ]
 
-    lugar = forms.ModelChoiceField(
-        queryset=Place.objects.all(),
-        label='Lugar'
-    )
+    lugar = forms.ModelChoiceField(queryset=Place.objects.all(), label='Lugar')
     estado = forms.ChoiceField(choices=ESTADO_CHOICES, label='Estado')
     prioridad = forms.ChoiceField(choices=PRIORIDAD_CHOICES, label='Prioridad')
     notas = forms.CharField(
@@ -44,9 +47,7 @@ class VisitIdeaForm(forms.Form):
         cleaned_data = super().clean()
         estado = cleaned_data.get('estado')
         notas = cleaned_data.get('notas')
-
         if estado == 'planificado' and not notas:
-            raise forms.ValidationError(
-                'Para pasar a "Planificado" es necesario agregar notas.'
-            )
+            raise forms.ValidationError('Para pasar a "Planificado" es necesario agregar notas.')
         return cleaned_data
+    

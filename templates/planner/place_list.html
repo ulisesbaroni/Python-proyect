@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Lugares - Viajero{% endblock %}
+
+{% block content %}
+<h1>Lugares</h1>
+
+<form method="GET" style="display:flex; gap:10px; margin-bottom:24px;">
+    <input
+        type="text"
+        name="busqueda"
+        placeholder="Buscar lugar..."
+        value="{{ busqueda }}"
+        style="padding:8px; border:1px solid #ccc; border-radius:4px; flex:1;"
+    >
+    <button type="submit" class="btn btn-primary">Buscar</button>
+    <a href="{% url 'place_list' %}" class="btn btn-secondary">Limpiar</a>
+</form>
+
+{% if places %}
+    <table style="width:100%; border-collapse:collapse;">
+        <thead>
+            <tr style="background:#ecf0f1;">
+                <th style="padding:10px; text-align:left;">Nombre</th>
+                <th style="padding:10px; text-align:left;">Ubicación</th>
+                <th style="padding:10px; text-align:left;">Km</th>
+                <th style="padding:10px; text-align:left;">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for place in places %}
+            <tr style="border-bottom:1px solid #ddd;">
+                <td style="padding:10px;">{{ place.nombre }}</td>
+                <td style="padding:10px;">{{ place.ubicacion|default:"-" }}</td>
+                <td style="padding:10px;">{{ place.km|default:"-" }}</td>
+                <td style="padding:10px; display:flex; gap:6px;">
+                    <a href="{% url 'place_detail' place.pk %}" class="btn btn-secondary">Ver</a>
+                    <a href="{% url 'place_edit' place.pk %}" class="btn btn-primary">Editar</a>
+                    <a href="{% url 'place_delete' place.pk %}" class="btn btn-danger">Borrar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    {% if busqueda %}
+        <p style="color:#777;">No se encontraron lugares con "{{ busqueda }}".</p>
+    {% else %}
+        <p style="color:#777;">Todavía no hay lugares cargados.</p>
+    {% endif %}
+{% endif %}
+
+<a href="{% url 'place_create' %}" class="btn btn-primary" style="margin-top:20px;">+ Nuevo lugar</a>
+{% endblock %}

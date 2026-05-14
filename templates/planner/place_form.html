@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ accion }} lugar - Viajero{% endblock %}
+
+{% block content %}
+<h1>{{ accion }} lugar</h1>
+
+<form method="POST" enctype="multipart/form-data" style="max-width:500px; margin-top:20px;">
+    {% csrf_token %}
+    {% for field in form %}
+        <div style="margin-bottom:14px;">
+            <label style="display:block; margin-bottom:4px; font-weight:bold;">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <span style="color:#c0392b; font-size:13px;">{{ field.errors.0 }}</span>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary">{{ accion }}</button>
+    <a href="{% url 'place_list' %}" class="btn btn-secondary" style="margin-left:10px;">Cancelar</a>
+</form>
+{% endblock %}
