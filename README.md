@@ -105,3 +105,7 @@ viajero/
 - Django 6.0
 - Bootstrap 5.3
 - SQLite
+
+## Video del flujo del proyecto
+
+Accedé a [https://drive.google.com/file/d/1uPnDobIGyrEAsANb0TyLaC1KMLZyyK0T/view?usp=sharing](https://drive.google.com/file/d/1uPnDobIGyrEAsANb0TyLaC1KMLZyyK0T/view?usp=sharing)

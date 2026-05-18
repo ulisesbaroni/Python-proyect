@@ -89,9 +89,11 @@ def cambiar_password_view(request):
 
         request.user.set_password(nueva)
         request.user.save()
-        # importante: actualiza la sesión para que no se desloguee
         update_session_auth_hash(request, request.user)
-        return redirect('perfil')
+
+        from django.contrib import messages
+        messages.success(request, '¡Contraseña cambiada correctamente!')
+        return redirect('home')
 
     return render(request, 'usuarios/cambiar_password.html')
 
